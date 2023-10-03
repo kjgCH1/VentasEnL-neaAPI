@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Entidades">
+      <HintPath>..\Entidades\bin\Debug\netcoreapp3.1\Entidades.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
