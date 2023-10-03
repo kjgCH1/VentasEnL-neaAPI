@@ -10,9 +10,9 @@ namespace EntidadesVentasEnLínea
         private double precio;
         private int producto;
 
-        public Categoria() { }
+        public Oferta() { }
 
-        public Categoria(int id, double precio, int producto)
+        public Oferta(int id, double precio, int producto)
         {
             this.id = id;
             this.precio = precio;
