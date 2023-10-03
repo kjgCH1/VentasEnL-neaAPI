@@ -5,11 +5,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VentasEnLíneaAPI", "VentasEnLíneaAPI\VentasEnLíneaAPI.csproj", "{59AA23DE-0180-46F0-A151-256FC1C210E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReglasDeNegocio", "ReglasDeNegocio\ReglasDeNegocio.csproj", "{89421154-11AD-43E8-83A8-700CE1DC7EA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReglasDeNegocio", "ReglasDeNegocio\ReglasDeNegocio.csproj", "{89421154-11AD-43E8-83A8-700CE1DC7EA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "Datos\Datos.csproj", "{F9642576-D271-4077-8648-86A30F898A7F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entidades", "Entidades\Entidades.csproj", "{A57D5BE3-53E7-40C6-B03A-95D5A0239D19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Entidades.csproj", "{A57D5BE3-53E7-40C6-B03A-95D5A0239D19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{89421154-11AD-43E8-83A8-700CE1DC7EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89421154-11AD-43E8-83A8-700CE1DC7EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89421154-11AD-43E8-83A8-700CE1DC7EA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9642576-D271-4077-8648-86A30F898A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9642576-D271-4077-8648-86A30F898A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9642576-D271-4077-8648-86A30F898A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9642576-D271-4077-8648-86A30F898A7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A57D5BE3-53E7-40C6-B03A-95D5A0239D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A57D5BE3-53E7-40C6-B03A-95D5A0239D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A57D5BE3-53E7-40C6-B03A-95D5A0239D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
