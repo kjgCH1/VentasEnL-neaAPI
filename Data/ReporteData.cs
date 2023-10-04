@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VentasEnLíneaData
 {
-    internal class ReporteData
+    public  class ReporteData
     {
     }
 }

@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using System;
 using System.Collections.Generic;
-using System.Text;
-using VentasEnLíneaEntidades;
+using System.Data.SqlClient;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     public class PedidoData
     {
@@ -82,7 +82,7 @@ namespace VentasEnLíneaData
 
         public List<Pedido> buscarPedidoAministrador(String fecha1, String fecha2) {
             var connection = new SqlConnection();
-            List<Pedido> pedidos = new List<Pedido>;
+            List<Pedido> pedidos = new List<Pedido>();
             string sql = $"exec sp_buscar_pedido @fecha1='{fecha1}', " +
                 $"@fecha2='{fecha2}'";
             using (SqlCommand command = new SqlCommand(sql, connection))

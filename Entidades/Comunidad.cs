@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entidades
 {
-    internal class Comunidad
+    public class Comunidad
     {
         private int id;
         private string nombre;
@@ -21,7 +21,7 @@ namespace Entidades
             this.nombre = nombre;
             this.precio = precio;
             this.habilitado = habilitado;
-
+           
         }
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }

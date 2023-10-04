@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
-using VentasEnLíneaEntidades;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
-    internal class CategoriaData
+    public class CategoriaData
     {
 
         private string connectionString;
@@ -15,12 +16,11 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearCategoria(VentasEnLíneaEntidades.Categoria categoria)
+        public void crearCategoria(Categoria categoria)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_categoria @id={categoria.Id}, " +
-                $"@nombre='{categoria.Nombre}', " +
-                $"@habilitado={categoria.Habilitado}" +
+                $"@nombre='{categoria.Nombre}'";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
@@ -30,12 +30,11 @@ namespace VentasEnLíneaData
             }
         }//crearCategoria
 
-        public void modificarCategoria(VentasEnLíneaEntidades.Categoria categoria)
+        public void modificarCategoria(Categoria categoria)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_categoria @id={categoria.Id}, " +
-                $"@nombre='{categoria.Nombre}', " +
-                $"@habilitado={categoria.Habilitado}" ;
+                $"@nombre='{categoria.Nombre}'" ;
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.CommandType = System.Data.CommandType.Text;
@@ -45,9 +44,9 @@ namespace VentasEnLíneaData
             }
         }//modificarCategoria
 
-        public List<VentasEnLíneaEntidades.Categoria> listarCategorias()
+        public List<Categoria> listarCategorias()
         {
-            List<VentasEnLíneaEntidades.Categoria> categorias = new List<VentasEnLíneaEntidades.Categoria>();
+            List<Categoria> categorias = new List<Categoria>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -61,10 +60,9 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Categoria categoria = new VentasEnLíneaEntidades.Categoria();
+                        Categoria categoria = new Categoria();
                         categoria.Id = (int)reader["id"];
                         categoria.Nombre = reader["nombre"].ToString();
-                        categoria.Habilitado = (bool)reader["habilitado"];
 
                         categorias.Add(categoria);
 
@@ -76,14 +74,14 @@ namespace VentasEnLíneaData
             }
         }//listarCategorias
 
-        public List<VentasEnLíneaEntidades.Categoria> buscarCategorias(string nombre)
+        public List<Categoria> buscarCategorias(string nombre)
         {
-            List<VentasEnLíneaEntidades.Categoria> categorias = new List<VentasEnLíneaEntidades.Categoria>();
+            List<Categoria> categorias = new List<Categoria>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_buscar_categoria @nombre='{nombre};
+                string sql = $"exec sp_buscar_categoria @nombre='{nombre}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -92,10 +90,9 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Categoria categoria = new VentasEnLíneaEntidades.Categoria();
+                        Categoria categoria = new Categoria();
                         categoria.Id = (int)reader["id"];
                         categoria.Nombre = reader["nombre"].ToString();
-                        categoria.Habilitado = (bool)reader["habilitado"];
 
                         categorias.Add(categoria);
 

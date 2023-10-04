@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     internal class DireccionData
     {
@@ -12,7 +12,7 @@ namespace VentasEnLíneaData
         {
             this.connectionString = connectionString;
         }
-        public void crearDireccion(VentasEnLíneaEntidades.Direccion direccion)
+        public void crearDireccion(Direccion direccion)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_direccion " +
@@ -30,7 +30,7 @@ namespace VentasEnLíneaData
             }
         }//crearDireccion
 
-        public void modificarDireccion(VentasEnLíneaEntidades.Direccion direccion)
+        public void modificarDireccion(Direccion direccion)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_direccion" +
@@ -48,14 +48,14 @@ namespace VentasEnLíneaData
         }//modificarDireccion
 
 
-        public List<VentasEnLíneaEntidades.Direccion> buscarDireccion(string cedula)
+        public List<Direccion> buscarDireccion(string cedula)
         {
-            List<VentasEnLíneaEntidades.Direccion> direcciones = new List<VentasEnLíneaEntidades.Direccion>();
+            List<Direccion> direcciones = new List<Direccion>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_buscar_direccion @cedula='{cedula};
+                string sql = $"exec sp_buscar_direccion @cedula='{cedula}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -64,7 +64,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Direccion direccion = new VentasEnLíneaEntidades.Direccion();
+                        Direccion direccion = new Direccion();
                         direccion.Id = (int)reader["id"];
                         direccion.Detalle = reader["detalle"].ToString();
                         direccion.Comunidad = (int)reader["comunidad"];
@@ -80,9 +80,9 @@ namespace VentasEnLíneaData
             }
         }//buscarDireccion
 
-        public List<VentasEnLíneaEntidades.Direccion> listarDirecciones()
+        public List<Direccion> listarDirecciones()
         {
-            List<VentasEnLíneaEntidades.Direccion> direcciones = new List<VentasEnLíneaEntidades.Direccion>();
+            List<Direccion> direcciones = new List<Direccion>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -96,7 +96,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Direccion direccion = new VentasEnLíneaEntidades.Direccion();
+                        Direccion direccion = new Direccion();
                         direccion.Id = (int)reader["id"];
                         direccion.Detalle = reader["detalle"].ToString();
                         direccion.Comunidad = (int)reader["comunidad"];
@@ -113,11 +113,11 @@ namespace VentasEnLíneaData
         }//listarDirecciones
 
 
-        public void habilitarDireccion(VentasEnLíneaEntidades.Direccion direccion)
+        public void habilitarDireccion(Direccion direccion)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_habilitar_direccion" +
-               $"@cedula={direccion.cedula}, " +
+               $"@id={direccion.Id}, " +
                 $"@habilitado={direccion.Habilitado}";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -129,19 +129,4 @@ namespace VentasEnLíneaData
         }//habilitarDireccion
     }
 
-    public void inhabilitarDireccion(VentasEnLíneaEntidades.Direccion direccion)
-    {
-        var connection = new SqlConnection();
-        string sql = $"exec sp_habilitar_direccion" +
-           $"@cedula={direccion.cedula}, " +
-            $"@habilitado={direccion.Habilitado}";
-        using (SqlCommand command = new SqlCommand(sql, connection))
-        {
-            command.CommandType = System.Data.CommandType.Text;
-            connection.Open();
-            command.ExecuteReader();
-            connection.Close();
-        }
-    }//inhabilitarDireccion
-}
 }

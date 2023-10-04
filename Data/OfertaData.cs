@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
-using VentasEnLíneaEntidades;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     internal class OfertaData
     {
@@ -15,7 +16,7 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearOferta(VentasEnLíneaEntidades.Oferta oferta)
+        public void crearOferta(Oferta oferta)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_oferta @id={oferta.Id}, " +
@@ -31,7 +32,7 @@ namespace VentasEnLíneaData
             }
         }//crearOferta
 
-        public void modificarOferta(VentasEnLíneaEntidades.Oferta oferta)
+        public void modificarOferta(Oferta oferta)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_oferta @id={oferta.Id}, " +
@@ -47,9 +48,9 @@ namespace VentasEnLíneaData
             }
         }//modificarOferta
 
-        public List<VentasEnLíneaEntidades.Oferta> listarOfertas()
+        public List<Oferta> listarOfertas()
         {
-            List<VentasEnLíneaEntidades.Oferta> ofertas = new List<VentasEnLíneaEntidades.Oferta>();
+            List<Oferta> ofertas = new List<Oferta>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -63,7 +64,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Oferta oferta = new VentasEnLíneaEntidades.Oferta();
+                        Oferta oferta = new Oferta();
                         oferta.Id = (int)reader["id"];
                         oferta.Precio = (double)reader["precio"];
                         oferta.Producto = (int)reader["producto"];
@@ -80,9 +81,9 @@ namespace VentasEnLíneaData
 
         }//listarOfertas
 
-        public List<VentasEnLíneaEntidades.Oferta> buscarOfertas(string nombre)
+        public List<Oferta> buscarOfertas(string nombre)
         {
-            List<VentasEnLíneaEntidades.Oferta> ofertas = new List<VentasEnLíneaEntidades.Oferta>();
+            List<Oferta> ofertas = new List<Oferta>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -96,7 +97,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Oferta oferta = new VentasEnLíneaEntidades.Oferta();
+                        Oferta oferta = new Oferta();
                         oferta.Id = (int)reader["id"];
                         oferta.Precio = (double)reader["precio"];
                         oferta.Producto = (int)reader["producto"];

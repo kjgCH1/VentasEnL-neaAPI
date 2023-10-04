@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entidades
 {
-    internal class Cliente
+    public class Cliente
     {
         private int id;
         private int cedula;

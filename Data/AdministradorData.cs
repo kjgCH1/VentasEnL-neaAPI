@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data.SqlClient;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     public class AdministradorData
     {
@@ -14,9 +14,9 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public VentasEnLíneaEntidades.Administrador iniciarSession(string usuario, string contraseña)
+        public Administrador iniciarSession(string usuario, string contraseña)
         {
-            VentasEnLíneaEntidades.Administrador administrador = new VentasEnLíneaEntidades.Administrador();
+            Administrador administrador = new Administrador();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -29,8 +29,7 @@ namespace VentasEnLíneaData
                     connection.Open();
 
                     SqlDataReader reader = command.ExecuteReader();
-                   
-                        VentasEnLíneaEntidades.Producto producto = new VentasEnLíneaEntidades.Producto();
+
                     administrador.Id = (int)reader["id"];
                     administrador.Nombre = reader["nombre"].ToString();
                     administrador.Usuario = reader["usuario"].ToString();
@@ -41,4 +40,5 @@ namespace VentasEnLíneaData
                 return administrador;
             }
         }
+    }
 }

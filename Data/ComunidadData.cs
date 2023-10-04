@@ -1,8 +1,8 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Text;
-
-namespace VentasEnLíneaData
+using System.Data.SqlClient;
+using Entidades;
+namespace Data
 {
     internal class ComunidadData
     {
@@ -13,7 +13,7 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearComunidad(VentasEnLíneaEntidades.Comunidad comunidad)
+        public void crearComunidad(Comunidad comunidad)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_comunidad " +
@@ -31,14 +31,14 @@ namespace VentasEnLíneaData
         }//crearComunidad
 
 
-        public List<VentasEnLíneaEntidades.Comunidad> buscarComunidad(string nombre)
+        public List<Comunidad> buscarComunidad(string nombre)
         {
-            List<VentasEnLíneaEntidades.Comunidad> comunidades = new List<VentasEnLíneaEntidades.Comunidad>();
+            List<Comunidad> comunidades = new List<Comunidad>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_buscar_comunidad @nombre='{nombre};
+                string sql = $"exec sp_buscar_comunidad @nombre='{nombre}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -47,7 +47,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Comunidad comunidad = new VentasEnLíneaEntidades.Cliente();
+                        Comunidad comunidad = new Comunidad();
                         comunidad.Id = (int)reader["id"];
                         comunidad.Nombre = reader["nombre"].ToString();
                         comunidad.Precio = (int)reader["precio"];
@@ -62,7 +62,7 @@ namespace VentasEnLíneaData
             }
         }//buscarComunidad
 
-        public void modificarComunidad(VentasEnLíneaEntidades.Comunidad comunidad)
+        public void modificarComunidad(Comunidad comunidad)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_comunidad" +
@@ -78,7 +78,7 @@ namespace VentasEnLíneaData
             }
         }//modificarComunidad
 
-        public void habilitarComunidad(VentasEnLíneaEntidades.Comunidad comunidad)
+        public void habilitarComunidad(Comunidad comunidad)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_habilitar_comunidad" +
@@ -94,20 +94,5 @@ namespace VentasEnLíneaData
         }//habilitarComunidad
     }
 
-    public void inhabilitarComunidad(VentasEnLíneaEntidades.Comunidad comunidad)
-    {
-        var connection = new SqlConnection();
-        string sql = $"exec sp_habilitar_comunidad" +
-            $"@nombre='{comunidad.Nombre}', " +
-            $"@habilitado={comunidad.Habilitado}";
-        using (SqlCommand command = new SqlCommand(sql, connection))
-        {
-            command.CommandType = System.Data.CommandType.Text;
-            connection.Open();
-            command.ExecuteReader();
-            connection.Close();
-        }
-    }//inhabilitarComunidad
-}
 }
 //Maria Najera lo hizo

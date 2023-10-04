@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entidades
 {
-    internal class Direccion
+    public class Direccion
     {
         private int id;
         private string detalle;
@@ -31,6 +31,8 @@ namespace Entidades
         public int Comunidad { get => comunidad; set => comunidad = value; }
         public int Cliente { get => cliente; set => cliente = value; }
         public bool Habilitado { get => habilitado; set => habilitado = value; }
+
+        public string Detalle { get => detalle; set => detalle = value; }
 
     }
 }

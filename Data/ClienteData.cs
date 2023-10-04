@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data.SqlClient;
+using Entidades;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     internal class ClienteData
     {
@@ -13,7 +14,7 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearCliente(VentasEnLíneaEntidades.Cliente cliente)
+        public void crearCliente(Cliente cliente)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_cliente " +
@@ -34,7 +35,7 @@ namespace VentasEnLíneaData
             }
         }//crearCliente
 
-        public void modificarCliente(VentasEnLíneaEntidades.Cliente cliente)
+        public void modificarCliente(Cliente cliente)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_cliente" +
@@ -55,14 +56,14 @@ namespace VentasEnLíneaData
         }//modificarCliente
 
 
-        public List<VentasEnLíneaEntidades.Cliente> buscarCliente(string cedula)
+        public List<Cliente> buscarCliente(string cedula)
         {
-            List<VentasEnLíneaEntidades.Cliente> clientes = new List<VentasEnLíneaEntidades.Cliente>();
+            List<Cliente> clientes = new List<Cliente>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_buscar_cliente @cedula='{cedula};
+                string sql = $"exec sp_buscar_cliente @cedula='{cedula}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -71,14 +72,14 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Cliente cliente = new VentasEnLíneaEntidades.Cliente();
+                        Cliente cliente = new Cliente();
                         cliente.Id = (int)reader["id"];
                         cliente.Cedula = (int)reader["cedula"];
                         cliente.Nombre = reader["nombre"].ToString();
                         cliente.Telefono = reader["telefono"].ToString();
                         cliente.Celular = reader["celular"].ToString();
                         cliente.Usuario = reader["usuario"].ToString();
-                        cliente.Contraseña = reader["contrasena"].ToString();
+                        cliente.Contrasena = reader["contrasena"].ToString();
 
                         clientes.Add(cliente);
 
@@ -90,9 +91,9 @@ namespace VentasEnLíneaData
             }
         }//buscarClientes
 
-        public List<VentasEnLíneaEntidades.Cliente> listarClientes()
+        public List<Cliente> listarClientes()
         {
-            List<VentasEnLíneaEntidades.Cliente> clientes = new List<VentasEnLíneaEntidades.Cliente>();
+            List<Cliente> clientes = new List<Cliente>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -106,14 +107,14 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Cliente cliente = new VentasEnLíneaEntidades.Cliente();
+                        Cliente cliente = new Cliente();
                         cliente.Id = (int)reader["id"];
                         cliente.Cedula = (int)reader["cedula"];
                         cliente.Nombre = reader["nombre"].ToString();
                         cliente.Telefono = reader["telefono"].ToString();
                         cliente.Celular = reader["celular"].ToString();
                         cliente.Usuario = reader["usuario"].ToString();
-                        cliente.Contraseña = reader["contrasena"].ToString();
+                        cliente.Contrasena = reader["contrasena"].ToString();
 
                         clientes.Add(cliente);
 
@@ -125,11 +126,11 @@ namespace VentasEnLíneaData
             }
         }//listarClientes
 
-        public void habilitarCliente(VentasEnLíneaEntidades.Cliente cliente)
+        public void habilitarCliente(Cliente cliente)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_habilitar_cliente" +
-               $"@cedula={cliente.cedula}, " +
+               $"@cedula={cliente.Cedula}, " +
                 $"@habilitado={cliente.Habilitado}";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -141,19 +142,4 @@ namespace VentasEnLíneaData
         }//habilitarCliente
     }
 
-    public void inhabilitarCliente(VentasEnLíneaEntidades.Cliente cliente)
-    {
-        var connection = new SqlConnection();
-        string sql = $"exec sp_habilitar_cliente" +
-           $"@cedula={cliente.cedula}, " +
-            $"@habilitado={cliente.Habilitado}";
-        using (SqlCommand command = new SqlCommand(sql, connection))
-        {
-            command.CommandType = System.Data.CommandType.Text;
-            connection.Open();
-            command.ExecuteReader();
-            connection.Close();
-        }
-    }//inhabilitarComunidad
-}
 }

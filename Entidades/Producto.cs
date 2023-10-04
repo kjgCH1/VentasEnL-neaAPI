@@ -11,16 +11,18 @@ namespace Entidades
         private string descripcion;
         private int categoria;
         private double precio;
+        private bool habilitado;
 
         public Producto() { }
 
-        public Producto(int id, string nombre, string descripcion, int categoria, double precio)
+        public Producto(int id, string nombre, string descripcion, int categoria, double precio, bool habilitado)
         {
             this.id = id;
             this.nombre = nombre;
             this.descripcion = descripcion;
             this.categoria = categoria;
             this.precio = precio;
+            this.habilitado = habilitado;
         }
 
         public int Id { get => id; set => id = value; }
@@ -28,5 +30,6 @@ namespace Entidades
         public string Descripcion { get => descripcion; set => descripcion = value; }
         public int Categoria { get => categoria; set => categoria = value; }
         public double Precio { get => precio; set => precio = value; }
+        public bool Habilitado { get => habilitado; set => habilitado = value; }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Entidades;
 using System.Collections.Generic;
-using System.Text;
-using VentasEnLíneaEntidades;
+using System.Data.SqlClient;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     internal class SaloneroData
     {
@@ -15,7 +14,7 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearSalonero(VentasEnLíneaEntidades.Salonero salonero)
+        public void crearSalonero(Salonero salonero)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_salonero @id={salonero.Id}, " +
@@ -32,7 +31,7 @@ namespace VentasEnLíneaData
             }
         }//crearSalonero
 
-        public void modificarSalonero(VentasEnLíneaEntidades.Salonero salonero)
+        public void modificarSalonero(Salonero salonero)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_salonero @id={salonero.Id}, " +
@@ -49,9 +48,9 @@ namespace VentasEnLíneaData
             }
         }//modificarSalonero
 
-        public List<VentasEnLíneaEntidades.Salonero> listarSaloneros()
+        public List<Salonero> listarSaloneros()
         {
-            List<VentasEnLíneaEntidades.Salonero> saloneros = new List<VentasEnLíneaEntidades.Salonero>();
+            List<Salonero> saloneros = new List<Salonero>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -65,7 +64,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Salonero salonero = new VentasEnLíneaEntidades.Salonero();
+                        Salonero salonero = new Salonero();
                         salonero.Id = (int)reader["id"];
                         salonero.Nombre = reader["nombre"].ToString();
                         salonero.Usuario = reader["usuario"].ToString();
@@ -82,14 +81,14 @@ namespace VentasEnLíneaData
             }
         }//listarSaloneros
 
-        public List<VentasEnLíneaEntidades.Salonero> buscarSaloneros(string nombre)
+        public List<Salonero> buscarSaloneros(string nombre)
         {
-            List<VentasEnLíneaEntidades.Salonero> saloneros = new List<VentasEnLíneaEntidades.Salonero>();
+            List<Salonero> saloneros = new List<Salonero>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_buscar_salonero @nombre='{nombre};
+                string sql = $"exec sp_buscar_salonero @nombre='{nombre}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -98,7 +97,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Salonero salonero = new VentasEnLíneaEntidades.Salonero();
+                        Salonero salonero = new Salonero();
                         salonero.Id = (int)reader["id"];
                         salonero.Nombre = reader["nombre"].ToString();
                         salonero.Usuario = reader["usuario"].ToString();

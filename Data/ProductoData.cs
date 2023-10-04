@@ -1,9 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using VentasEnLíneaEntidades;
+﻿using System.Collections.Generic;
+using Entidades;
+using System.Data.SqlClient;
 
-namespace VentasEnLíneaData
+namespace Data
 {
     internal class ProductoData
     {
@@ -14,7 +13,7 @@ namespace VentasEnLíneaData
             this.connectionString = connectionString;
         }
 
-        public void crearProducto(VentasEnLíneaEntidades.Producto producto)
+        public void crearProducto(Producto producto)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_crear_producto @id={producto.Id}, " +
@@ -32,7 +31,7 @@ namespace VentasEnLíneaData
             }
         }
 
-        public void modificarProducto(VentasEnLíneaEntidades.Producto producto)
+        public void modificarProducto(Producto producto)
         {
             var connection = new SqlConnection();
             string sql = $"exec sp_modificar_producto @id={producto.Id}, " +
@@ -49,9 +48,9 @@ namespace VentasEnLíneaData
                 connection.Close();
             }
         }
-        public List<VentasEnLíneaEntidades.Producto> listarProductos()
+        public List<Producto> listarProductos()
         {
-            List<VentasEnLíneaEntidades.Producto> productos = new List<VentasEnLíneaEntidades.Producto>();
+            List<Producto> productos = new List<Producto>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -65,7 +64,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Producto producto = new VentasEnLíneaEntidades.Producto();
+                        Producto producto = new Producto();
                         producto.Id = (int)reader["id"];
                         producto.Nombre = reader["nombre"].ToString();
                         producto.Descripcion = reader["descripcion"].ToString();
@@ -82,9 +81,9 @@ namespace VentasEnLíneaData
                 return productos;
             }
         }
-        public List<VentasEnLíneaEntidades.Producto> buscarProductos(string nombre, int categoria)
+        public List<Producto> buscarProductos(string nombre, int categoria)
         {
-            List<VentasEnLíneaEntidades.Producto> productos = new List<VentasEnLíneaEntidades.Producto>();
+            List<Producto> productos = new List<Producto>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -99,7 +98,7 @@ namespace VentasEnLíneaData
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        VentasEnLíneaEntidades.Producto producto = new VentasEnLíneaEntidades.Producto();
+                        Producto producto = new Producto();
                         producto.Id = (int)reader["id"];
                         producto.Nombre = reader["nombre"].ToString();
                         producto.Descripcion = reader["descripcion"].ToString();
