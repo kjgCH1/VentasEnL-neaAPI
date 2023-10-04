@@ -78,20 +78,6 @@ namespace Data
             }
         }//modificarComunidad
 
-        public void habilitarComunidad(Comunidad comunidad)
-        {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_habilitar_comunidad" +
-                $"@nombre='{comunidad.Nombre}', " +
-                $"@habilitado={comunidad.Habilitado}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
-            }
-        }//habilitarComunidad
     }
 
 }
