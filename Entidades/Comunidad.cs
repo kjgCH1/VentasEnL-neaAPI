@@ -8,25 +8,22 @@ namespace Entidades
     {
         private int id;
         private string nombre;
-        private decimal precio;
-        private bool habilitado;
+        private double precio;
 
         public Comunidad()
         {
         }
 
-        public Comunidad(int id, string nombre, decimal precio, bool habilitado)
+        public Comunidad(int id, string nombre, double precio)
         {
             this.id = id;
             this.nombre = nombre;
             this.precio = precio;
-            this.habilitado = habilitado;
            
         }
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
-        public decimal Precio { get => precio; set => precio = value; }
-        public bool Habilitado { get => habilitado; set => habilitado = value; }
+        public double Precio { get => precio; set => precio = value; }
 
     }
 }
