@@ -5,5 +5,14 @@
     <StartupObject>VentasEnLíneaAPI.Program</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReglasDeNegocio\ReglasDeNegocio.csproj" />
+  </ItemGroup>
+
 
 </Project>

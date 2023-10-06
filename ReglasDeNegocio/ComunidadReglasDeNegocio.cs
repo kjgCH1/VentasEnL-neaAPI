@@ -17,7 +17,7 @@ namespace ReglasDeNegocio
             return data.crearComunidad(comunidad);
         }
 
-        public List<Comunidad> buscarbuscarComunidad(string nombre) { 
+        public List<Comunidad> buscarComunidad(string nombre) { 
             ComunidadData data = new ComunidadData(this.connectionString);
             return data.buscarComunidad(nombre);
         }
