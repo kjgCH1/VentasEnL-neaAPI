@@ -8,13 +8,13 @@ namespace Entidades
     {
         private int id;
         private string nombre;
-        private double precio;
+        private decimal precio;
 
         public Comunidad()
         {
         }
 
-        public Comunidad(int id, string nombre, double precio)
+        public Comunidad(int id, string nombre, decimal precio)
         {
             this.id = id;
             this.nombre = nombre;
@@ -23,7 +23,7 @@ namespace Entidades
         }
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
-        public double Precio { get => precio; set => precio = value; }
+        public decimal Precio { get => precio; set => precio = value; }
 
     }
 }

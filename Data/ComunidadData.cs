@@ -75,7 +75,7 @@ namespace Data
                         Comunidad comunidad = new Comunidad();
                         comunidad.Id = (int)reader["id"];
                         comunidad.Nombre = reader["nombre"].ToString();
-                        comunidad.Precio = (int)reader["precio"];
+                        comunidad.Precio = (decimal)reader["precio"];
 
                         comunidades.Add(comunidad);
 
