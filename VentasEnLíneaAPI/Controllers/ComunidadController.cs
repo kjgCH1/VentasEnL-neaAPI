@@ -10,7 +10,7 @@ namespace VentasEnLíneaAPI.Controllers
     [Route("[controller]")]//Ensablado de clase
     public class ComunidadController : ControllerBase
     {
-        [HttpGet]
+         [HttpGet]
         public string BuscarComunidad()
         {
             string connectionString = "workstation id=WokAndRoll.mssql.somee.com;packet size=4096;user id=chesky22_SQLLogin_1;pwd=44a9mwmwsr;data source=WokAndRoll.mssql.somee.com;persist security info=False;initial catalog=WokAndRoll";
@@ -31,7 +31,12 @@ namespace VentasEnLíneaAPI.Controllers
             return JsonConvert.SerializeObject(reglasDeNegocio.buscarComunidad(parametroBusqueda));
         }
 
-
-
+        [HttpGet("buscarComunidadId")]
+        public string BuscarComunidad(int id)
+        {
+            string connectionString = "workstation id=WokAndRoll.mssql.somee.com;packet size=4096;user id=chesky22_SQLLogin_1;pwd=44a9mwmwsr;data source=WokAndRoll.mssql.somee.com;persist security info=False;initial catalog=WokAndRoll";
+            ComunidadReglasDeNegocio reglasDeNegocio = new ComunidadReglasDeNegocio(connectionString);
+            return JsonConvert.SerializeObject(reglasDeNegocio.buscarComunidadId(id));
+        }
     }
 }

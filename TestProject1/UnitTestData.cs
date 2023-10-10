@@ -18,7 +18,7 @@ namespace TestProject1
             Comunidad comunidad = new Comunidad();
             comunidad.Nombre = "Berolis";
             comunidad.Precio = 1000.00m;
-            comunidadData.crearComunidad(comunidad);
+            comunidadData.buscarComunidadId(2);
 
 
 

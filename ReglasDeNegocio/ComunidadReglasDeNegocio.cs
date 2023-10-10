@@ -21,5 +21,11 @@ namespace ReglasDeNegocio
             ComunidadData data = new ComunidadData(this.connectionString);
             return data.buscarComunidad(nombre);
         }
+
+        public Comunidad buscarComunidadId(int id) { 
+            ComunidadData data = new ComunidadData(this.connectionString);
+            return data.buscarComunidadId(id);
+
+        }
     }
 }

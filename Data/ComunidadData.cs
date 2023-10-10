@@ -103,7 +103,37 @@ namespace Data
             }
         }//modificarComunidad
 
-    }
+        public Comunidad buscarComunidadId(int id)
+        {
+            Comunidad comunidad = new Comunidad();
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                string sql = $"exec sp_buscar_comunidad_ID @id={id}";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = System.Data.CommandType.Text;
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        comunidad.Id = (int)reader["id"];
+                        comunidad.Nombre = reader["nombre"].ToString();
+                        comunidad.Precio = (decimal)reader["precio"];
+
+
+
+                    }
+                    connection.Close();
+
+                }
+                return comunidad;
+            }
+        }
+
+    }
 }
 //Maria Najera lo hizo
