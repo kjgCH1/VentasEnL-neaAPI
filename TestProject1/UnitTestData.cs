@@ -16,9 +16,10 @@ namespace TestProject1
 
             ComunidadData comunidadData = new ComunidadData(connectionString);
             Comunidad comunidad = new Comunidad();
-            comunidad.Nombre = "Berolis";
-            comunidad.Precio = 1000.00m;
-            comunidadData.buscarComunidadId(2);
+            comunidad.Nombre = "Don Tomas";
+            comunidad.Precio = 1000.0m;
+            comunidad.Id = 42;
+            comunidadData.modificarComunidad(comunidad);
 
 
 

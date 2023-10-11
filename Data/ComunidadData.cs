@@ -87,19 +87,33 @@ namespace Data
             }
         }//buscarComunidad
 
-        public void modificarComunidad(Comunidad comunidad)
+        public bool modificarComunidad(Comunidad comunidad)
         {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_modificar_comunidad" +
-               $"@id={comunidad.Id}, " +
-                $"@nombre='{comunidad.Nombre}', " +
-                $"@precio={comunidad.Precio}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            try
             {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("sp_modificar_comunidad", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros al comando
+                        command.Parameters.AddWithValue("@NuevoNombre", comunidad.Nombre);
+                        command.Parameters.AddWithValue("@NuevoPrecio", comunidad.Precio);
+                        command.Parameters.AddWithValue("@ComunidadID", comunidad.Id);
+                        // Ejecutar el procedimiento almacenado
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                    // Otro manejo de errores si no es una violación de restricción única.
+                    Console.WriteLine("Error: " + ex.Message);
+                    return false;       
             }
         }//modificarComunidad
 

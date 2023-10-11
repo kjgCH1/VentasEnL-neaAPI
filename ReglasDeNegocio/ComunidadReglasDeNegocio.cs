@@ -9,23 +9,28 @@ namespace ReglasDeNegocio
     {
         private string connectionString;
 
-        public ComunidadReglasDeNegocio(string connectionString) { 
+        public ComunidadReglasDeNegocio(string connectionString) {
             this.connectionString = connectionString;
         }
         public bool crearComunidad(Comunidad comunidad) {
-            ComunidadData data= new ComunidadData(this.connectionString);
+            ComunidadData data = new ComunidadData(this.connectionString);
             return data.crearComunidad(comunidad);
         }
 
-        public List<Comunidad> buscarComunidad(string nombre) { 
+        public List<Comunidad> buscarComunidad(string nombre) {
             ComunidadData data = new ComunidadData(this.connectionString);
             return data.buscarComunidad(nombre);
         }
 
-        public Comunidad buscarComunidadId(int id) { 
+        public Comunidad buscarComunidadId(int id) {
             ComunidadData data = new ComunidadData(this.connectionString);
             return data.buscarComunidadId(id);
 
+        }
+
+        public bool modificarComunidad(Comunidad comunidad) { 
+            ComunidadData data = new ComunidadData(this.connectionString);
+            return data.modificarComunidad(comunidad);
         }
     }
 }
