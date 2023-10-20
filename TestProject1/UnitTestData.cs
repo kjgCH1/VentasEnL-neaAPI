@@ -13,16 +13,10 @@ namespace TestProject1
         {
            
             string connectionString = "workstation id=WokAndRoll.mssql.somee.com;packet size=4096;user id=chesky22_SQLLogin_1;pwd=44a9mwmwsr;data source=WokAndRoll.mssql.somee.com;persist security info=False;initial catalog=WokAndRoll";
-
-            ComunidadData comunidadData = new ComunidadData(connectionString);
-            Comunidad comunidad = new Comunidad();
-            comunidad.Nombre = "Don Tomas";
-            comunidad.Precio = 1000.0m;
-            comunidad.Id = 42;
-            comunidadData.modificarComunidad(comunidad);
-
-
-
+            CategoriaData data = new CategoriaData(connectionString);
+            Categoria categoria = new Categoria();
+           categoria.Nombre = "test";
+            data.crearCategoria(categoria);
         }
     }
 }

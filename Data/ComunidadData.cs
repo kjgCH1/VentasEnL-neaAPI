@@ -55,7 +55,6 @@ namespace Data
 
         }//crearComunidad
 
-
         public List<Comunidad> buscarComunidad(string nombre)
         {
             List<Comunidad> comunidades = new List<Comunidad>();
