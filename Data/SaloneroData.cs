@@ -1,61 +1,101 @@
 ﻿using Entidades;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Data
 {
-    internal class SaloneroData
+    public class SaloneroData
     {
 
         private string connectionString;
 
-        SaloneroData(string connectionString)
+        public SaloneroData(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public void crearSalonero(Salonero salonero)
+        public bool crearSalonero(Salonero salonero)
         {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_crear_salonero @id={salonero.Id}, " +
-                $"@nombre='{salonero.Nombre}', " +
-                $"@usuario='{salonero.Usuario}'," +
-                $"@contraseña={salonero.Contraseña}', " +
-                $"@habilitado={salonero.Habilitado}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            try
             {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("sp_crearSalonero", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros al comando
+                        command.Parameters.AddWithValue("@nombre", salonero.Nombre);
+                        command.Parameters.AddWithValue("@usuario", salonero.Usuario);
+                        command.Parameters.AddWithValue("@contrasena", salonero.Contrasena);
+                        command.Parameters.AddWithValue("@habilitado", salonero.Habilitado);
+
+                        // Ejecutar el procedimiento almacenado
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
             }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627) // El número 2627 es específico para violación de restricción única.
+                {
+                    // Aquí puedes manejar el error como desees, por ejemplo, mostrar un mensaje al usuario.
+                    Console.WriteLine("Ya existe un registro con ese nombre.");
+                    return false;
+                }
+                else
+                {
+                    // Otro manejo de errores si no es una violación de restricción única.
+                    Console.WriteLine("Error: " + ex.Message);
+                    return false;
+                }
+            }
+
         }//crearSalonero
 
-        public void modificarSalonero(Salonero salonero)
+        public bool modificarSalonero(Salonero salonero)
         {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_crear_salonero @id={salonero.Id}, " +
-                $"@nombre='{salonero.Nombre}', " +
-                $"@usuario='{salonero.Usuario}'," +
-                $"@contraseña={salonero.Contraseña}', " +
-                $"@habilitado={salonero.Habilitado}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            try
             {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("sp_modificarSalonero", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@id", salonero.Id);
+                        command.Parameters.AddWithValue("@nombre", salonero.Nombre);
+                        command.Parameters.AddWithValue("@usuario", salonero.Usuario);
+                        command.Parameters.AddWithValue("@contrasena", salonero.Contrasena);
+                        command.Parameters.AddWithValue("@habilitado", salonero.Habilitado);
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                    }
+                }
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                // Manejo de errores
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
             }
         }//modificarSalonero
 
-        public List<Salonero> listarSaloneros()
+        public List<Salonero> buscarSalonero(string nombre)
         {
             List<Salonero> saloneros = new List<Salonero>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-                string sql = $"exec sp_listar_salonero";
+                string sql = $"exec sp_buscarSalonero @nombre='{nombre}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -68,40 +108,7 @@ namespace Data
                         salonero.Id = (int)reader["id"];
                         salonero.Nombre = reader["nombre"].ToString();
                         salonero.Usuario = reader["usuario"].ToString();
-                        salonero.Contraseña = reader["contraseña"].ToString();
-                        salonero.Habilitado = (bool)reader["habilitado"];
-
-                        saloneros.Add(salonero);
-
-                    }
-                    connection.Close();
-
-                }
-                return saloneros;
-            }
-        }//listarSaloneros
-
-        public List<Salonero> buscarSaloneros(string nombre)
-        {
-            List<Salonero> saloneros = new List<Salonero>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-
-                string sql = $"exec sp_buscar_salonero @nombre='{nombre}'";
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    command.CommandType = System.Data.CommandType.Text;
-                    connection.Open();
-
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Salonero salonero = new Salonero();
-                        salonero.Id = (int)reader["id"];
-                        salonero.Nombre = reader["nombre"].ToString();
-                        salonero.Usuario = reader["usuario"].ToString();
-                        salonero.Contraseña = reader["contraseña"].ToString();
+                        salonero.Contrasena = reader["contrasena"].ToString();
                         salonero.Habilitado = (bool)reader["habilitado"];
 
                         saloneros.Add(salonero);
@@ -113,6 +120,35 @@ namespace Data
                 return saloneros;
             }
         }//buscarSaloneros
+
+        public Salonero buscarSaloneroId(int id)
+        {
+            Salonero salonero = new Salonero();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                string sql = $"exec sp_buscar_salonero_ID @id={id}";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = System.Data.CommandType.Text;
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        salonero.Id = (int)reader["id"];
+                        salonero.Nombre = reader["nombre"].ToString();
+                        salonero.Usuario = reader["usuario"].ToString();
+                        salonero.Contrasena = reader["contrasena"].ToString();
+
+                    }
+                    connection.Close();
+
+                }
+                return salonero;
+            }
+        }//buscarSaloneroId
 
 
     }
