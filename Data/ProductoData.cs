@@ -1,61 +1,71 @@
 ﻿using System.Collections.Generic;
 using Entidades;
 using System.Data.SqlClient;
+using System.Data;
+using System;
 
 namespace Data
 {
-    internal class ProductoData
+    public class ProductoData
     {
         private string connectionString;
 
-        ProductoData(string connectionString)
+        public ProductoData(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public void crearProducto(Producto producto)
+        public bool crearProducto(Producto producto)
         {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_crear_producto @id={producto.Id}, " +
-                $"@nombre='{producto.Nombre}', " +
-                $"@descripcion='{producto.Descripcion}'," +
-                $"@categoria={producto.Categoria}" +
-                $"@habilitado={producto.Habilitado}" +
-                $"@precio={producto.Precio}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            try
             {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("sp_crearProducto", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros al comando
+                        command.Parameters.AddWithValue("@Nombre", producto.Nombre);
+                        command.Parameters.AddWithValue("@Categoria", producto.Categoria);
+                        command.Parameters.AddWithValue("@Descripcion", producto.Descripcion);
+                        command.Parameters.AddWithValue("@Precio", producto.Precio);
+                        command.Parameters.AddWithValue("@Imagen", producto.Imagen);
+                        command.Parameters.AddWithValue("@habilitado", producto.Habilitado);
+
+                        // Ejecutar el procedimiento almacenado
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
             }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627) // El número 2627 es específico para violación de restricción única.
+                {
+                    // Aquí puedes manejar el error como desees, por ejemplo, mostrar un mensaje al usuario.
+                    Console.WriteLine("Ya existe un registro con ese nombre.");
+                    return false;
+                }
+                else
+                {
+                    // Otro manejo de errores si no es una violación de restricción única.
+                    Console.WriteLine("Error: " + ex.Message);
+                    return false;
+                }
+            }
+
         }
 
-        public void modificarProducto(Producto producto)
-        {
-            var connection = new SqlConnection();
-            string sql = $"exec sp_modificar_producto @id={producto.Id}, " +
-                $"@nombre='{producto.Nombre}', " +
-                $"@descripcion='{producto.Descripcion}'," +
-                $"@categoria={producto.Categoria}" +
-                 $"@habilitado={producto.Habilitado}" +
-                $"@precio={producto.Precio}";
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                command.CommandType = System.Data.CommandType.Text;
-                connection.Open();
-                command.ExecuteReader();
-                connection.Close();
-            }
-        }
-        public List<Producto> listarProductos()
+        public List<Producto> buscarProducto(string nombre)
         {
             List<Producto> productos = new List<Producto>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
-                string sql = $"exec sp_listar_producto";
+                string sql = $"exec sp_buscarProducto @Nombre='{nombre}'";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -67,11 +77,11 @@ namespace Data
                         Producto producto = new Producto();
                         producto.Id = (int)reader["id"];
                         producto.Nombre = reader["nombre"].ToString();
+                        producto.Habilitado = (bool)reader["habilitado"];
                         producto.Descripcion = reader["descripcion"].ToString();
                         producto.Categoria = (int)reader["categoria"];
-                        producto.Habilitado = (bool)reader["habilitado"];
-                        producto.Precio = (double)reader["precio"];
-
+                        producto.Precio = (decimal)reader["precio"];
+                        producto.Imagen = reader["imagen"].ToString();
                         productos.Add(producto);
 
                     }
@@ -81,15 +91,13 @@ namespace Data
                 return productos;
             }
         }
-        public List<Producto> buscarProductos(string nombre, int categoria)
+        public List<Producto> buscarProductoCategoria(int categoria)
         {
             List<Producto> productos = new List<Producto>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
-                string sql = $"exec sp_buscar_producto @nombre='{nombre}', " +
-                $"@categoria='{categoria}'";
+                string sql = $"exec sp_bucarProductoCategoria @categoria={categoria}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = System.Data.CommandType.Text;
@@ -101,11 +109,11 @@ namespace Data
                         Producto producto = new Producto();
                         producto.Id = (int)reader["id"];
                         producto.Nombre = reader["nombre"].ToString();
+                        producto.Habilitado = (bool)reader["habilitado"];
                         producto.Descripcion = reader["descripcion"].ToString();
                         producto.Categoria = (int)reader["categoria"];
-                        producto.Habilitado = (bool)reader["habilitado"];
-                        producto.Precio = (double)reader["precio"];
-
+                        producto.Precio = (decimal)reader["precio"];
+                        producto.Imagen = reader["imagen"].ToString();
                         productos.Add(producto);
 
                     }

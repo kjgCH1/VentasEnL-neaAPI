@@ -11,12 +11,18 @@ namespace TestProject1
         [Fact]
         public void Test1()
         {
-           
+
             string connectionString = "workstation id=WokAndRoll.mssql.somee.com;packet size=4096;user id=chesky22_SQLLogin_1;pwd=44a9mwmwsr;data source=WokAndRoll.mssql.somee.com;persist security info=False;initial catalog=WokAndRoll";
-            CategoriaData data = new CategoriaData(connectionString);
-            Categoria categoria = new Categoria();
-           categoria.Nombre = "test";
-            data.crearCategoria(categoria);
+            Producto producto = new Producto();
+            producto.Nombre = "California Chrunchy";
+            producto.Precio = 3995.00m;
+            producto.Descripcion = "Pepino, aguacate,zanahoria, surime y alga";
+            producto.Categoria = 12;
+            producto.Habilitado = true;
+            producto.Imagen = "california.png";
+
+            ProductoData data = new ProductoData(connectionString);
+            data.buscarProducto("ca");
         }
     }
 }

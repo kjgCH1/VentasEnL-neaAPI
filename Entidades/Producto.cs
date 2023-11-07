@@ -10,13 +10,13 @@ namespace Entidades
         private string nombre;
         private string descripcion;
         private int categoria;
-        private double precio;
+        private decimal precio;
         private string imagen;
         private bool habilitado;
 
         public Producto() { }
 
-        public Producto(int id, string nombre, string descripcion, int categoria, double precio, bool habilitado, string imagen)
+        public Producto(int id, string nombre, string descripcion, int categoria, decimal precio, bool habilitado, string imagen)
         {
             this.id = id;
             this.nombre = nombre;
@@ -32,7 +32,7 @@ namespace Entidades
         public string Nombre { get => nombre; set => nombre = value; }
         public string Descripcion { get => descripcion; set => descripcion = value; }
         public int Categoria { get => categoria; set => categoria = value; }
-        public double Precio { get => precio; set => precio = value; }
+        public decimal Precio { get => precio; set => precio = value; }
         public bool Habilitado { get => habilitado; set => habilitado = value; }
         public string Imagen { get => imagen; set => imagen = value; }
     }
